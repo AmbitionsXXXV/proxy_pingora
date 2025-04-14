@@ -1,0 +1,17 @@
+[package]
+name = "proxy_pingora"
+version = "0.1.0"
+authors = ["Etcetera <etetera3636@gmail.com>"]
+edition = "2024"
+license = "MIT"
+documentation = "https://docs.rs/"
+repository = "https://github.com/AmbitionsXXXV/proxy_pingora"
+homepage = "https://github.com/AmbitionsXXXV/proxy_pingora"
+description = """
+
+"""
+readme = "README.md"
+categories = ["development-tools"]
+keywords = []
+
+[dependencies]

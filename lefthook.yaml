@@ -1,0 +1,70 @@
+---
+# Lefthook configuration file
+pre-commit:
+  parallel: true  # 启用并行执行，等价于 fail_fast: false
+  commands:
+    # pre-commit-hooks equivalents
+    check-byte-order-marker:
+      glob: "*.*"
+      run: "! grep -r $'\xEF\xBB\xBF' {staged_files}"
+    check-case-conflict:
+      run: "git ls-files | sort -f | uniq -i -c | grep -v '^ *1 ' || true"
+    check-merge-conflict:
+      glob: "*.*"
+      run: >-
+        ! grep -r '^<<<<<<<\\|^=======\\|^>>>>>>>' {staged_files}
+    check-symlinks:
+      run: "git ls-files -s | grep '^120000' && exit 1 || true"
+    check-yaml:
+      glob: "*.{yaml,yml}"
+      run: "yamllint {staged_files}"  # 需要安装 yamllint
+    end-of-file-fixer:
+      glob: "*.*"
+      run: >-
+        for file in {staged_files}; do [ -f "$file" ] &&
+        tail -c1 "$file" | read -r || echo >> "$file"; done
+    mixed-line-ending:
+      glob: "*.*"
+      run: "! grep -r $'\r$' {staged_files}"
+    trailing-whitespace:
+      glob: "*.*"
+      run: "! grep -r '[[:blank:]]$' {staged_files}"  # 检查行尾空白
+
+    # Black for Python
+    black:
+      glob: "*.py"
+      run: "black --check {staged_files}"  # 需要安装 black
+
+    # Rust local hooks
+    cargo-fmt:
+      glob: "*.rs"
+      run: "cargo fmt -- --check"
+    cargo-deny:
+      glob: "*.rs"
+      run: "cargo deny check -d"
+    typos:
+      run: "typos"  # pass_filenames: false
+    cargo-check:
+      glob: "*.rs"
+      run: "cargo check --all"  # pass_filenames: false
+    cargo-clippy:
+      glob: "*.rs"
+      run: >-
+        cargo clippy --all-targets --all-features --tests --benches --
+        -D warnings
+    cargo-test:
+      glob: "*.rs"
+      run: "cargo nextest run --all-features -- --include-ignored"
+
+commit-msg:
+  commands:
+    placeholder:
+      run: "true"  # 占位，确保 commit-msg 钩子存在
+
+# 可选：手动运行的钩子
+manual:
+  parallel: true
+  commands:
+    cargo-test-manual:
+      glob: "*.rs"
+      run: "cargo nextest run --all-features -- --include-ignored"
