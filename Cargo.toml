@@ -15,9 +15,12 @@ keywords = []
 [dependencies]
 anyhow = "1.0.98"
 async-trait = "0.1.88"
+axum = { version = "0.8.3", features = ["http2"] }
+http = "1.3.1"
 pingora = { version = "0.4.0", features = ["lb", "rustls"] }
 serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.44.2", features = ["macros", "rt-multi-thread"] }
+tower-http = { version = "0.6.2", features = ["trace"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
