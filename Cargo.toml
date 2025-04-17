@@ -14,10 +14,12 @@ keywords = []
 
 [dependencies]
 anyhow = "1.0.98"
+async-trait = "0.1.88"
+pingora = { version = "0.4.0", features = ["lb", "rustls"] }
 serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.44.2", features = ["macros", "rt-multi-thread"] }
 tracing = "0.1.41"
-tracing-subscriber = "0.3.19"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
 [dev-dependencies]
 argon2 = "0.5.3"
@@ -25,4 +27,7 @@ axum = "0.8.3"
 chrono = { version = "0.4.40", features = ["serde"] }
 dashmap = "6.1"
 rand = "0.8.5"
-serde_json = "1.0"
+serde_json = "1.0.140"
+
+[patch.crates-io]
+sfv = { git = "https://github.com/undef1nd/sfv.git", tag = "v0.9.4" }

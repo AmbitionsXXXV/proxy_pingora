@@ -136,9 +136,8 @@ fn hash_password(argon2: &Argon2<'static>, password: &str) -> Result<String, any
     let salt = SaltString::generate(&mut OsRng);
     let password_hash = argon2
         .hash_password(password.as_bytes(), &salt)
-        .map_err(|e| anyhow::anyhow!("Failed to hash password: {}", e))?
+        .map_err(|_| anyhow::anyhow!("Failed to hash password"))?
         .to_string();
-
     Ok(password_hash)
 }
 
@@ -204,11 +203,11 @@ async fn main() {
     let app_state = AppState::new();
 
     let app = Router::new()
-        .route("/users/:id", get(get_user))
+        .route("/users/{id}", get(get_user))
         .route("/users", get(list_users))
         .route("/users", post(create_user))
-        .route("/users/:id", put(update_user))
-        .route("/users/:id", delete(delete_user))
+        .route("/users/{id}", put(update_user))
+        .route("/users/{id}", delete(delete_user))
         .route("/health", get(health_check))
         .with_state(app_state);
 
