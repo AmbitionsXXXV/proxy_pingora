@@ -6,6 +6,8 @@ use pingora::{
 };
 use tracing::{info, warn};
 
+pub mod conf;
+
 pub struct SimpleProxy {}
 
 #[async_trait]
